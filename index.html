@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Diwali Card – TrueField Foods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&family=Caveat:wght@400;500&family=Homemade+Apple&display=swap" rel="stylesheet">
+<style>
+  /* TrueField brand font, served from their Shopify CDN */
+  @font-face {
+    font-family: "Google Sans Flex";
+    src: url("https://cdn.shopify.com/s/files/1/0886/1401/1216/files/gsf.ttf?v=1774937558") format("truetype");
+    font-weight: 100 1000;
+    font-display: swap;
+  }
+
+  :root {
+    /* Pulled from truefieldfoods.com */
+    --tf-green: #82BC46;
+    --tf-green-dark: #6FA537;
+    --tf-red: #891112;
+    --tf-yellow: #FFC73B;
+    --tf-cream: #FFFFED;
+    --tf-ink: #121212;
+    --tf-ink-75: rgba(18, 18, 18, .75);
+    --tf-ink-55: rgba(18, 18, 18, .55);
+    --tf-line: rgba(18, 18, 18, .14);
+    --radius-btn: 10px;
+    --radius-media: 20px;
+
+    /* Pen ink for the handwritten preview */
+    --pen: #1E2440;
+
+    --font-ui: "Google Sans Flex", "Urbanist", system-ui, sans-serif;
+    --font-hand: "Kalam", cursive;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: .6px;
+    color: var(--tf-ink);
+    background: var(--tf-cream);
+    display: grid;
+    place-items: center;
+    padding: 32px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .panel {
+    width: 100%;
+    max-width: 920px;
+    background: #fff;
+    border-radius: var(--radius-media);
+    box-shadow: 0 1px 0 var(--tf-line), 0 24px 60px -30px rgba(137, 17, 18, .25);
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  /* ---------- Left: form ---------- */
+  .logo { display: block; width: 132px; height: auto; margin-bottom: 32px; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--tf-yellow);
+    color: var(--tf-ink);
+    font-size: 13px; font-weight: 600; letter-spacing: .6px;
+    padding: 4px 12px; border-radius: 40px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: 30px; line-height: 36px; font-weight: 600; letter-spacing: .6px;
+    margin: 0 0 10px;
+  }
+  .lede { color: var(--tf-ink-75); margin: 0 0 28px; }
+
+  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+
+  textarea {
+    width: 100%;
+    min-height: 168px;
+    resize: vertical;
+    font: inherit;
+    letter-spacing: .3px;
+    color: var(--tf-ink);
+    background: #fff;
+    border: 1px solid rgba(18, 18, 18, .55);
+    border-radius: var(--radius-btn);
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  textarea:focus { border-color: var(--tf-green); box-shadow: 0 0 0 3px rgba(130, 188, 70, .25); }
+  textarea::placeholder { color: var(--tf-ink-55); }
+
+  .meta {
+    display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--tf-ink-55);
+    margin: 8px 0 24px;
+  }
+  .meta { gap: 12px; }
+  .meta #count { white-space: nowrap; }
+  .meta .over { color: var(--tf-red); font-weight: 600; }
+
+  .cta {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 30px;
+    border: 0;
+    border-radius: var(--radius-btn);
+    background: var(--tf-green);
+    color: #fff;
+    font: inherit; font-size: 16px; font-weight: 600; letter-spacing: 1px;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .cta:hover { background: var(--tf-green-dark); }
+  .cta:active { transform: translateY(1px); }
+  .cta:disabled { opacity: .5; cursor: not-allowed; }
+  .cta:focus-visible { outline: 2px solid var(--tf-ink); outline-offset: 3px; }
+
+  .note { font-size: 13px; color: var(--tf-ink-55); margin: 14px 0 0; text-align: center; }
+
+  /* ---------- Right: card ---------- */
+  .stage { perspective: 1600px; }
+
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    aspect-ratio: 890 / 1256;
+    transform-style: preserve-3d;
+    transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute; inset: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 18px 40px -12px rgba(80, 30, 10, .35);
+    background: #F3E6CC center / cover no-repeat;
+  }
+  .face.back  { background-image: url("assets/card-back.jpg"); }
+  .face.front { background-image: url("assets/card-front.jpg"); transform: rotateY(180deg); }
+
+  /* Writable area inside the floral border, above the diya */
+  .writing {
+    position: absolute;
+    left: 17%; right: 17%;
+    top: 15%; bottom: 33%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ink {
+    width: 100%;
+    max-height: 100%;
+    font-family: var(--font-hand);
+    font-weight: 400;
+    color: var(--pen);
+    line-height: 1.38;
+    text-align: center;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    letter-spacing: 0;
+    /* a touch of pen bleed into the paper */
+    text-shadow: 0 0 .4px rgba(30, 36, 64, .55);
+    mix-blend-mode: multiply;
+  }
+  /* Alternate handwriting styles, picked with ?hand=caveat or ?hand=apple */
+  .ink.hand-caveat { font-family: "Caveat", cursive; font-weight: 500; line-height: 1.2; --fit-max: .13; }
+  .ink.hand-apple  { font-family: "Homemade Apple", cursive; line-height: 1.9; --fit-max: .08; }
+  .ink .w { display: inline-block; white-space: nowrap; }
+  .ink .c { display: inline-block; }
+  .ink.writing-anim .c { opacity: 0; animation: ink .18s ease-out forwards; }
+  .ink.placeholder { color: rgba(30, 36, 64, .55); }
+
+  @keyframes ink {
+    from { opacity: 0; filter: blur(1.5px); }
+    to   { opacity: var(--o, 1); filter: blur(0); }
+  }
+
+  .flip-hint {
+    display: block; margin: 16px auto 0;
+    background: none; border: 0; padding: 4px 8px;
+    font: inherit; font-size: 13px; color: var(--tf-ink-55);
+    text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+  }
+  .flip-hint:hover { color: var(--tf-ink); }
+
+  @media (max-width: 760px) {
+    body { padding: 16px; place-items: start center; }
+    .panel { grid-template-columns: 1fr; padding: 24px; gap: 32px; }
+    .logo { margin-bottom: 24px; }
+    h1 { font-size: 24px; line-height: 30px; }
+    .card { max-width: 320px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
+    .ink.writing-anim .c { animation: none; opacity: var(--o, 1); }
+  }
+</style>
+</head>
+<body>
+
+<main class="panel">
+  <section>
+    <a href="https://truefieldfoods.com/pages/the-diwali-edit" aria-label="TrueField Foods – The Diwali Edit">
+      <img class="logo" src="assets/truefield-logo.png" alt="TrueField – True is our thing">
+    </a>
+
+    <span class="eyebrow">🪔 The Diwali Edit</span>
+    <h1>See your note, handwritten.</h1>
+    <p class="lede">Every hamper ships with this card. Type your message and we'll show you how it will look once it's written by hand.</p>
+
+    <label for="msg">Your message</label>
+    <textarea id="msg" maxlength="280" placeholder="Dear Anjali,&#10;Wishing you a Diwali full of light, laughter and good food. Love, Rohan"></textarea>
+    <div class="meta">
+      <span>Keep it short. Long notes get written smaller.</span>
+      <span id="count">0 / 280</span>
+    </div>
+
+    <button class="cta" id="go" type="button">Preview my card</button>
+    <p class="note">This is a preview. Each card is written by hand, so yours will vary a little.</p>
+  </section>
+
+  <section class="preview">
+    <div class="stage">
+      <div class="card" id="card" role="img" aria-label="Preview of the Diwali card with your message">
+        <div class="face back">
+          <div class="writing"><div class="ink placeholder" id="ink"></div></div>
+        </div>
+        <div class="face front"></div>
+      </div>
+    </div>
+    <button class="flip-hint" id="flip" type="button">See the front of the card</button>
+  </section>
+</main>
+
+<script>
+(() => {
+  const LIMIT = 280;
+  const SAMPLE = "Dear Anjali,\nWishing you a Diwali full of light, laughter and good food.\nLove, Rohan";
+
+  const msg = document.getElementById("msg");
+  const ink = document.getElementById("ink");
+  const count = document.getElementById("count");
+  const go = document.getElementById("go");
+  const card = document.getElementById("card");
+  const flip = document.getElementById("flip");
+
+  // Handwriting style: kalam (default), caveat or apple
+  const hand = new URLSearchParams(location.search).get("hand");
+  if (hand === "caveat" || hand === "apple") ink.classList.add("hand-" + hand);
+
+  // Deterministic wobble so the same text always renders the same way
+  const rand = (seed) => {
+    const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+    return x - Math.floor(x);
+  };
+
+  function render(text, animate) {
+    ink.textContent = "";
+    ink.classList.toggle("writing-anim", animate);
+    let i = 0;
+    // keep the whole note under ~3s, however long it is
+    const step = Math.min(28, 3000 / Math.max(text.length, 1));
+    const lines = text.replace(/\r/g, "").split("\n");
+    // a hand drifts slightly per line
+    lines.forEach((line, li) => {
+      const lineTilt = (rand(li + 101) - .5) * 1.2;
+      line.split(/( +)/).forEach((tok) => {
+        if (!tok) return;
+        if (/^ +$/.test(tok)) { ink.append(document.createTextNode(tok)); i += tok.length; return; }
+        const w = document.createElement("span");
+        w.className = "w";
+        for (const ch of tok) {
+          const c = document.createElement("span");
+          c.className = "c";
+          c.textContent = ch;
+          const r = (rand(i) - .5) * 4 + lineTilt;
+          const y = (rand(i + 7) - .5) * 1.6;
+          const s = 1 + (rand(i + 13) - .5) * .06;
+          c.style.transform = `translateY(${y}px) rotate(${r}deg) scale(${s})`;
+          c.style.setProperty("--o", (.84 + rand(i + 29) * .16).toFixed(2));
+          c.style.opacity = animate ? "" : "var(--o)";
+          if (animate) c.style.animationDelay = `${Math.round(i * step)}ms`;
+          w.append(c);
+          i++;
+        }
+        ink.append(w);
+      });
+      if (li < lines.length - 1) { ink.append(document.createTextNode("\n")); i += 4; }
+    });
+    fit();
+  }
+
+  // Shrink the handwriting until it fits the writable area
+  function fit() {
+    const box = ink.parentElement;
+    const maxH = box.clientHeight;
+    const width = box.clientWidth;
+    const cap = parseFloat(getComputedStyle(ink).getPropertyValue("--fit-max")) || .11;
+    let lo = width * 0.035, hi = width * cap;
+    for (let n = 0; n < 14; n++) {
+      const mid = (lo + hi) / 2;
+      ink.style.fontSize = mid + "px";
+      if (ink.scrollHeight <= maxH) lo = mid; else hi = mid;
+    }
+    ink.style.fontSize = lo + "px";
+  }
+
+  function updateCount() {
+    const n = msg.value.length;
+    count.textContent = `${n} / ${LIMIT}`;
+    count.classList.toggle("over", n > LIMIT);
+    go.disabled = n > LIMIT;
+  }
+
+  go.addEventListener("click", () => {
+    const text = msg.value.trim();
+    if (!text) { msg.focus(); return; }
+    card.classList.remove("flipped");
+    flip.textContent = "See the front of the card";
+    ink.classList.remove("placeholder");
+    render(text, true);
+    go.textContent = "Update preview";
+    if (matchMedia("(max-width: 760px)").matches) card.scrollIntoView({ block: "center" });
+  });
+
+  msg.addEventListener("input", updateCount);
+
+  const toggle = () => {
+    const f = card.classList.toggle("flipped");
+    flip.textContent = f ? "See your message" : "See the front of the card";
+  };
+  card.addEventListener("click", toggle);
+  flip.addEventListener("click", toggle);
+
+  let t;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(fit, 100); });
+
+  document.fonts.ready.then(() => render(SAMPLE, false));
+  render(SAMPLE, false);
+  updateCount();
+})();
+</script>
+</body>
+</html>
