@@ -131,6 +131,39 @@
 
   .note { font-size: 13px; color: var(--tf-ink-55); margin: 14px 0 0; text-align: center; }
 
+  /* Shown once a preview exists: get the message onto the order */
+  .next {
+    max-width: 380px;
+    margin: 20px auto 0;
+    padding: 16px 18px;
+    border: 1px solid var(--tf-line);
+    border-radius: var(--radius-btn);
+    background: var(--tf-cream);
+    text-align: center;
+  }
+  .next[hidden] { display: none; }
+  .next h2 { font-size: 16px; line-height: 22px; font-weight: 600; margin: 0 0 4px; }
+  .next p { font-size: 14px; color: var(--tf-ink-75); margin: 0 0 14px; }
+  .copy {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--tf-green);
+    border-radius: var(--radius-btn);
+    background: #fff;
+    color: var(--tf-ink);
+    font: inherit; font-size: 15px; font-weight: 600; letter-spacing: 1px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .copy:hover { background: rgba(130, 188, 70, .12); }
+  .copy.done { background: var(--tf-green); color: #fff; }
+  .copy:focus-visible { outline: 2px solid var(--tf-ink); outline-offset: 3px; }
+  .shop {
+    display: inline-block; margin-top: 12px;
+    font-size: 14px; font-weight: 600; color: var(--tf-ink);
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+
   /* ---------- Right: card ---------- */
   .stage { perspective: 1600px; }
 
@@ -248,6 +281,13 @@
       </div>
     </div>
     <button class="flip-hint" id="flip" type="button">See the front of the card</button>
+
+    <div class="next" id="next" hidden>
+      <h2>Happy with it?</h2>
+      <p>Copy your message, then paste it into the gift note box when you check out.</p>
+      <button class="copy" id="copy" type="button">Copy my message</button>
+      <a class="shop" href="https://truefieldfoods.com/pages/the-diwali-edit">Shop the Diwali Edit →</a>
+    </div>
   </section>
 </main>
 
@@ -262,6 +302,8 @@
   const go = document.getElementById("go");
   const card = document.getElementById("card");
   const flip = document.getElementById("flip");
+  const next = document.getElementById("next");
+  const copy = document.getElementById("copy");
 
   // Handwriting style: kalam (default), caveat or apple
   const hand = new URLSearchParams(location.search).get("hand");
@@ -339,10 +381,27 @@
     ink.classList.remove("placeholder");
     render(text, true);
     go.textContent = "Update preview";
+    next.hidden = false;
+    copy.textContent = "Copy my message";
+    copy.classList.remove("done");
     if (matchMedia("(max-width: 760px)").matches) card.scrollIntoView({ block: "center" });
   });
 
   msg.addEventListener("input", updateCount);
+
+  copy.addEventListener("click", async () => {
+    const text = msg.value.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // older browsers / non-secure contexts
+      msg.select();
+      document.execCommand("copy");
+      msg.setSelectionRange(msg.value.length, msg.value.length);
+    }
+    copy.textContent = "Copied ✓  Paste it at checkout";
+    copy.classList.add("done");
+  });
 
   const toggle = () => {
     const f = card.classList.toggle("flipped");
