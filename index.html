@@ -76,7 +76,27 @@
     font-size: 13px; font-weight: 600; letter-spacing: .6px;
     padding: 4px 12px; border-radius: 40px;
     margin-bottom: 14px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background .2s, border-color .2s, box-shadow .2s, transform .2s;
   }
+  .eyebrow .arrow {
+    display: inline-block;
+    max-width: 0; opacity: 0; overflow: hidden;
+    margin-left: -6px; /* cancel the flex gap while hidden */
+    transition: max-width .2s, opacity .2s, transform .2s, margin .2s;
+    transform: translateX(-4px);
+  }
+  .eyebrow:hover, .eyebrow:focus-visible {
+    background: #FFB800;
+    border-color: rgba(18, 18, 18, .2);
+    box-shadow: 0 4px 12px -4px rgba(137, 17, 18, .35);
+    transform: translateY(-1px);
+  }
+  .eyebrow:hover .arrow, .eyebrow:focus-visible .arrow {
+    max-width: 1.2em; opacity: 1; transform: translateX(0); margin-left: 0;
+  }
+  .eyebrow:focus-visible { outline: 2px solid var(--tf-ink); outline-offset: 3px; }
 
   h1 {
     font-size: 30px; line-height: 36px; font-weight: 600; letter-spacing: .6px;
@@ -256,7 +276,7 @@
       <img class="logo" src="assets/truefield-logo.png" alt="TrueField – True is our thing">
     </a>
 
-    <span class="eyebrow">🪔 The Diwali Edit</span>
+    <a class="eyebrow" href="https://truefieldfoods.com/pages/the-diwali-edit">🪔 The Diwali Edit <span class="arrow" aria-hidden="true">→</span></a>
     <h1>See your note, handwritten.</h1>
     <p class="lede">Every hamper ships with this card. Type your message and we'll show you how it will look once it's written by hand.</p>
 
